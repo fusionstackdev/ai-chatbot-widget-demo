@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chatbot Demo</title>
+  <link rel="stylesheet" href="chatbot.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    .demo-header {
+      text-align: center;
+      padding: 40px 20px 20px;
+      font-size: 1.8rem;
+      color: #111827;
+      font-weight: 600;
+    }
+    .demo-subtext {
+      text-align: center;
+      color: #4b5563;
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="demo-header">FusionStack AI Chatbot Widget (Demo)</div>
+<div class="demo-subtext">This is a demo version. Responses are simulated based on your admin configuration saved locally.</div>
+
+<!-- Chatbot Toggle and Widget -->
+<script>
+  (function () {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initChatbot);
+    } else {
+      initChatbot();
+    }
+
+    const botAvatarURL = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png";
+    const userAvatarURL = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
+    function initChatbot() {
+      const config = {
+        title: localStorage.getItem("title") || "AI Chatbot",
+        buttonLabel: localStorage.getItem("widgetLabel") || "💬 Chat with us",
+        initialMessage: localStorage.getItem("initialMessage") || "Hi! How can I help you today?",
+        context: localStorage.getItem("context") || "This is a demo chatbot."
+      };
+
+      const style = document.createElement("link");
+      style.rel = "stylesheet";
+      style.href = "chatbot.css";
+      document.head.appendChild(style);
+
+      const toggleBtn = document.createElement("div");
+      toggleBtn.id = "chatbot-toggle";
+      toggleBtn.innerHTML = `
+            <div class="chatbot-icon">💬</div>
+            <div class="chatbot-label">${config.buttonLabel}</div>
+        `;
+      document.body.appendChild(toggleBtn);
+
+      const widget = document.createElement("div");
+      widget.id = "ai-chatbot-widget";
+      widget.innerHTML = `
+            <div class="chat-header">
+                <div id="chat-header-title">${config.title}</div>
+                <div id="chat-close-btn">✖</div>
+            </div>
+            <div class="chat-body" id="chat-body"></div>
+            <div class="chat-input">
+                <input type="text" id="chat-input-box" placeholder="Type your message..." />
+                <button id="chat-send-btn">Send</button>
+            </div>
+        `;
+      document.body.appendChild(widget);
+
+      toggleBtn.addEventListener("click", () => {
+        widget.classList.add("active");
+        toggleBtn.style.display = "none";
+        appendMessage("bot", config.initialMessage);
+      });
+
+      document.getElementById("chat-close-btn").addEventListener("click", () => {
+        widget.classList.remove("active");
+        toggleBtn.style.display = "flex";
+      });
+
+      document.getElementById("chat-send-btn").addEventListener("click", sendMessage);
+      document.getElementById("chat-input-box").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") sendMessage();
+      });
+
+      function appendMessage(sender, text) {
+        const msgRow = document.createElement("div");
+        msgRow.className = `chat-message-row ${sender}`;
+
+        const avatar = document.createElement("div");
+        avatar.className = "chat-avatar";
+        avatar.innerHTML = `<img src="${sender === "bot" ? botAvatarURL : userAvatarURL}" alt="${sender}" />`;
+
+        const msg = document.createElement("div");
+        msg.className = `chat-message ${sender}`;
+        msg.textContent = text;
+
+        msgRow.appendChild(avatar);
+        msgRow.appendChild(msg);
+
+        const body = document.getElementById("chat-body");
+        body.appendChild(msgRow);
+        body.scrollTop = body.scrollHeight;
+      }
+
+      function sendMessage() {
+        const input = document.getElementById("chat-input-box");
+        const message = input.value.trim();
+        if (!message) return;
+
+        appendMessage("user", message);
+        input.value = "";
+
+        setTimeout(() => {
+          appendMessage("bot", `You said: "${message}"\n\n_Context: ${config.context}_`);
+        }, 800);
+      }
+    }
+  })();
+</script>
+</body>
+</html>

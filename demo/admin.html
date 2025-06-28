@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Chatbot Admin Panel (Demo)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    .panel-card {
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      padding: 32px 36px;
+      max-width: 560px;
+      width: 100%;
+      border: 1px solid #e5e7eb;
+    }
+    .panel-card h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin: 14px 0 6px;
+      color: #374151;
+      font-size: 0.95rem;
+    }
+    input, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: #ffffff;
+      color: #111827;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, textarea:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+      outline: none;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .save-btn {
+      display: block;
+      width: 100%;
+      margin-top: 24px;
+      background-color: #4f46e5;
+      color: white;
+      font-weight: 600;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .save-btn:hover {
+      background-color: #4338ca;
+    }
+    .live-status {
+      margin-top: 18px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #bbf7d0;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+    .footer {
+      margin-top: 16px;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="panel-card">
+  <h1>AI Chatbot Admin Panel (Demo)</h1>
+
+  <label for="apiKey">OpenAI API Key:</label>
+  <input type="password" id="apiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxx" />
+
+  <label for="title">Chatbot Title:</label>
+  <input type="text" id="title" placeholder="AI Chatbot" />
+
+  <label for="widgetLabel">Widget Label:</label>
+  <input type="text" id="widgetLabel" placeholder="💬 Chat with us" />
+
+  <label for="initialMessage">Initial Message:</label>
+  <input type="text" id="initialMessage" placeholder="Hey there! How can I assist you today?" />
+
+  <label for="context">Chatbot Context (optional):</label>
+  <textarea id="context" placeholder="Provide key context or FAQ for the chatbot here..."></textarea>
+
+  <button class="save-btn" onclick="saveConfig()">💾 Save Config</button>
+
+  <div class="live-status" id="liveStatus">
+    🟢 Demo mode: Data saved locally
+  </div>
+
+  <div class="footer">
+    v1.2 | FusionStack AI Widget (Demo)
+  </div>
+</div>
+
+<script>
+  // Load from localStorage
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("apiKey").value = localStorage.getItem("openaiKey") || "";
+    document.getElementById("title").value = localStorage.getItem("title") || "";
+    document.getElementById("widgetLabel").value = localStorage.getItem("widgetLabel") || "";
+    document.getElementById("initialMessage").value = localStorage.getItem("initialMessage") || "";
+    document.getElementById("context").value = localStorage.getItem("context") || "";
+  });
+
+  // Save to localStorage
+  function saveConfig() {
+    localStorage.setItem("openaiKey", document.getElementById("apiKey").value);
+    localStorage.setItem("title", document.getElementById("title").value);
+    localStorage.setItem("widgetLabel", document.getElementById("widgetLabel").value);
+    localStorage.setItem("initialMessage", document.getElementById("initialMessage").value);
+    localStorage.setItem("context", document.getElementById("context").value);
+    alert("✅ Configuration saved (locally)");
+  }
+</script>
+</body>
+</html>
